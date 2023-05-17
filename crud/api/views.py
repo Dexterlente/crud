@@ -9,7 +9,9 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
-from .serializers import UserSerializer, LoginSerializer, LogoutSerializer
+from .serializers import UserSerializer, LoginSerializer, LogoutSerializer, FriendListSerializer
+from .models import FriendList
+
 # Create your views here.
 
 class LoginAPIView(ObtainAuthToken):
@@ -44,3 +46,19 @@ def register(request):
         return Response({'message': 'Successfully registered', 'token': token.key})
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class FriendListViewSet(generics.ListAPIView):
+    queryset = FriendList.objects.all()
+    serializer_class = FriendListSerializer
+    permission_classes = [IsAuthenticated]
+
+class FriendListDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FriendList.objects.all()
+    serializer_class = FriendListSerializer
+    lookup_field = 'id'
+    authentication_classes =  [TokenAuthentication] 
+
+    def get_queryset(self):
+        return FriendList.objects.filter(id=self.kwargs['id'])

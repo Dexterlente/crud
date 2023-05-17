@@ -1,8 +1,13 @@
 from rest_framework.serializers import ModelSerializer
-from .models import User
+from .models import User,  FriendList
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
+
+class FriendListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendList
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     password_confirm = serializers.CharField(write_only=True)
