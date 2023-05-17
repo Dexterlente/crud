@@ -9,8 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
-from .serializers import UserSerializer, LoginSerializer, ProfileSerializer, LogoutSerializer, PostSerializer
-
+from .serializers import UserSerializer, LoginSerializer, ProfileSerializer, LogoutSerializer
 # Create your views here.
 
 class LoginAPIView(ObtainAuthToken):
