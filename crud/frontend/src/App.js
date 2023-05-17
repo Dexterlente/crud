@@ -3,6 +3,7 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 import { lazy } from 'react'
 import Contacts from './components/Contacts'
 import FriendListDetail from './components/FriendListDetail'
+import Chat from './components/Chat';
 
 const LoginPage = lazy(() => import('./components/LoginPage'));
 const RegisterForm = lazy(() =>  import('./components/RegisterForm'));
@@ -12,6 +13,7 @@ function App() {
   return (
     <div className="App">
         <Routes>
+        <Route path="/chat" element={<Chat />} />     
           <Route path="/register" element={<RegisterForm />} />     
           <Route path="/loggin" element={<LoginPage />} />   
           <Route path="/contacts" element={<Contacts />} />
