@@ -1,10 +1,16 @@
-import logo from './logo.svg';
 import './App.css';
+import { Outlet, Route, Routes } from 'react-router-dom'
+import { lazy } from 'react'
+const LoginPage = lazy(() => import('./components/LoginPage'));
+const RegisterForm = lazy(() =>  import('./components/RegisterForm'));
 
 function App() {
   return (
     <div className="App">
-     AAAAAAAAAA
+        <Routes>
+          <Route path="/register" element={<RegisterForm />} />     
+          <Route path="/loggin" element={<LoginPage />} />   
+        </Routes>
     </div>
   );
 }
