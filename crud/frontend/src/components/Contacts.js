@@ -4,10 +4,18 @@ const Contacts = () => {
   const [friendLists, setFriendLists] = useState([]);
 
   useEffect(() => {
-    fetch('/api/friendlists/')
-      .then(response => response.json())
-      .then(data => setFriendLists(data))
-      .catch(error => console.log(error));
+    const token = Cookies.get('token');
+
+    if (token) {
+      fetch('/api/friendlists/', {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+        .then(response => response.json())
+        .then(data => setFriendLists(data))
+        .catch(error => console.log(error));
+    }
   }, []);
 
   return (

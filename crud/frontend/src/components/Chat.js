@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const Chat = () => {
   const [message, setMessage] = useState('');
   const [receivedMessages, setReceivedMessages] = useState([]);
+  const [notification, setNotification] = useState('');
 
   const sendMessage = () => {
-    axios.post('/api/chat/', { message })
+    const token = Cookies.get('token');
+    
+    axios.post('/api/chat/', { message }, { headers: { Authorization: `Token ${token}` } })
       .then(response => console.log('Message sent!'))
       .catch(error => console.error(error));
   };
@@ -15,8 +19,12 @@ const Chat = () => {
     const socket = new WebSocket('ws://localhost:8000/ws/chat/room1/');
 
     socket.onmessage = event => {
-      const message = JSON.parse(event.data);
-      setReceivedMessages(prevMessages => [...prevMessages, message]);
+      const data = JSON.parse(event.data);
+      if (data.message) {
+        setReceivedMessages(prevMessages => [...prevMessages, data.message]);
+      } else if (data.notification) {
+        setNotification(data.notification);
+      }
     };
 
     return () => {
@@ -27,6 +35,7 @@ const Chat = () => {
   return (
     <div>
       <h1>Chat App</h1>
+      {notification && <p>{notification}</p>}
       <div>
         <input
           type="text"
@@ -37,7 +46,7 @@ const Chat = () => {
       </div>
       <div>
         {receivedMessages.map((msg, index) => (
-          <p key={index}>{msg.message}</p>
+          <p key={index}>{msg}</p>
         ))}
       </div>
     </div>

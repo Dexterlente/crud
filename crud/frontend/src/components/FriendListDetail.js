@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { useParams } from 'react-router-dom'
 
-const FriendListDetail = ({ friendListId }) => {
+const FriendListDetail = () => {
   const [friendList, setFriendList] = useState(null);
+  const { id } = useParams();
 
   useEffect(() => {
-    fetch(`/api/friendlists/${friendListId}/`)
-      .then(response => response.json())
-      .then(data => setFriendList(data))
-      .catch(error => console.log(error));
-  }, [friendListId]);
+    const token = Cookies.get('token');
+
+    if (token) {
+      fetch(`/api/friendlists/${id}/`, {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+        .then(response => response.json())
+        .then(data => setFriendList(data))
+        .catch(error => console.log(error));
+    }
+  }, [id]);
 
   if (!friendList) {
     return <p>Loading friend list...</p>;
