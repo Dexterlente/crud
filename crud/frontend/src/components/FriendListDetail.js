@@ -39,3 +39,4 @@ const FriendListDetail = () => {
 };
 
 export default FriendListDetail;
+// 2hours
